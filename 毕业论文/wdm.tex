@@ -1,0 +1,44 @@
+% !TEX program = xelatex
+
+\documentclass{article}
+
+\usepackage{amsmath, amsbsy, amstext, amscd, amsxtra, amsopn, amssymb}
+\everymath{\displaystyle}
+
+\usepackage{algorithm2e}
+\usepackage{algorithmic}
+
+\newcommand{\argmax}{\operatorname{argmax}}
+
+\begin{document}
+
+\begin{algorithm}[htbp!]
+  \caption{Viterbi Algorithm}
+  \KwIn{$\mathbf{Y} = \{Y_1,Y_2,\cdots,Y_T\}, \pi, \mathbf{A}, \mathbf{B}$}
+  \KwOut{$\mathbf{X} = \{X_1,X_2,\cdots,X_T\}$}
+
+  \Begin{
+  
+
+
+   $\mathbf{O} \leftarrow \{O_1,O_2,\cdots,O_N\}$\;
+   $\mathbf{S} \leftarrow \{S_1,S_2,\cdots,S_K\}$\;
+  \For{$\text{each state}~i\in\{1,2,\cdots\,K\}$}{
+     $T_1[i,1] \leftarrow \pi\cdot\mathbf{B}_{iy_1}$\;
+     $T_2[i,1] \leftarrow 0$
+    }
+  % \ENDFOR
+  \For{$\text{each observation}~i\in\{2,3,\cdots\,T\}$}{
+    \For{each state $j\in\{1,2,\cdots\,K\}$}{
+       $T_1[j,i] \leftarrow \mathbf{B}_{jy_i}\cdot\max{\{T_1[k,i-1]\cdot A_{kj}\}}$\;
+       $T_2[j,i] \leftarrow \argmax{\{T_1[k,i-1]\cdot A_{kj}\}}$
+      }}
+   $Z_T \leftarrow \argmax{\{T_1[k,T]\}}$\;
+   $X_T \leftarrow S_{Z_T}$\;
+  \For{$i \leftarrow T,T-1,\cdots,2$}{
+     $Z_{i-1} \leftarrow T_2[Z_i,i]$\;
+     $X_{i-1} \leftarrow S_{Z_{i-1}}$}
+  }
+\end{algorithm}
+
+\end{document} 
